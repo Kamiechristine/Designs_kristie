@@ -1,13 +1,29 @@
-# Your Project Title
+# Interior Design Management System
 
 ## Description
-A brief description of your project.
+This project is a command-line interface (CLI) application for managing an interior design system. It allows users to add design themes, rooms, and furniture to a database, as well as list existing rooms and furniture. The application uses SQLAlchemy for database interactions and Alembic for database migrations.
 
 ## Installation
-Instructions for installing the project.
+To install the project, follow these steps:
+1. Clone the repository:
+   ```bash
+   git clone <repository-url>
+   ```
+2. Navigate to the project directory:
+   ```bash
+   cd interior-design
+   ```
+3. Install the required dependencies:
+   ```bash
+   pip install -r Pipfile
+   ```
 
 ## Usage
-Instructions for using the project.
+To run the application, use the following command:
+```bash
+python cli.py
+```
+Follow the prompts in the CLI to manage your interior design system.
 
 ### CLI Functionality
 The command-line interface (CLI) allows users to manage the interior design system. Below are the available commands:
