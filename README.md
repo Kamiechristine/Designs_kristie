@@ -1,80 +1,60 @@
-# Interior Design System
+# Your Project Title
 
-## Overview
-The Interior Design System is a command-line interface (CLI) application that allows users to manage design themes, rooms, and furniture for interior design projects. It utilizes a database to store and retrieve information about various design elements.
-
-## Features
-- Add new design themes
-- Add rooms with specified sizes and associated design themes
-- Add furniture items to rooms
-- List all rooms and furniture in the database
-- Run database migrations using Alembic
+## Description
+A brief description of your project.
 
 ## Installation
-1. Clone the repository:
-   ```bash
-   git clone <repository-url>
-   cd interior-design
-   ```
-
-2. Install the required dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. Set up the database:
-   ```bash
-   alembic upgrade head
-   ```
+Instructions for installing the project.
 
 ## Usage
-To run the CLI application, execute the following command:
-```bash
-python cli.py
-```
+Instructions for using the project.
 
-Follow the on-screen prompts to navigate through the available options.
+### CLI Functionality
+The command-line interface (CLI) allows users to manage the interior design system. Below are the available commands:
 
-## Contributing
-If you would like to contribute to this project, please follow these guidelines:
-- Ensure your code adheres to the project's coding standards.
-- Submit issues for any bugs or feature requests.
-- Create pull requests for proposed changes.
+- **Add Design**: 
+  - Command: `add_design <theme>`
+  - Description: Adds a new design theme to the database.
+  - Example: `add_design "Modern"`
 
-## Examples
-Here are some examples of how to use the CLI commands:
-- To add a new design theme:
-  ```bash
-  python cli.py add_theme "Modern"
-  ```
-- To list all rooms:
-  ```bash
-  python cli.py list_rooms
-  ```
+- **Add Room**: 
+  - Command: `add_room <name> <size> <design_id>`
+  - Description: Adds a new room to the database.
+  - Example: `add_room "Living Room" 25.5 1`
 
-## Configuration
-You can configure the application by setting environment variables or modifying the configuration files as needed.
+- **Add Furniture**: 
+  - Command: `add_furniture <name> <material> <price> <room_id>`
+  - Description: Adds a new piece of furniture to the database.
+  - Example: `add_furniture "Sofa" "Leather" 499.99 1`
 
-## Troubleshooting
-If you encounter issues, consider the following solutions:
+- **List Rooms**: 
+  - Command: `list_rooms`
+  - Description: Lists all rooms in the database.
 
-### Common Issues
-- **Database Connection Errors**: Ensure that your database settings are correct and that the database server is running.
-- **Missing Dependencies**: If you see import errors, make sure all required packages are installed. You can install them using:
-  ```bash
-  pip install -r requirements.txt
-  ```
-- **Incorrect Command Usage**: Double-check the commands you are using. Refer to the Examples section for correct usage.
+- **List Furniture**: 
+  - Command: `list_furniture`
+  - Description: Lists all furniture in the database.
 
-### Solutions
-- **Database Connection**: Verify your database connection settings in the configuration file. Ensure that the database server is accessible.
-- **Installing Dependencies**: Run the command above to install any missing packages.
-- **Command Examples**: If you are unsure about the command syntax, refer to the Examples section for guidance.
-- Ensure all dependencies are installed.
-- Check the database connection settings.
+- **Run Migrations**: 
+  - Command: `run_migrations`
+  - Description: Runs Alembic migrations to upgrade the database.
 
-## Contact Information
-For support or inquiries, please contact the maintainers at [your-email@example.com].
+### Database Schema
+The following classes represent the database schema for the interior design system:
 
-## License
-This project is licensed under the MIT License.
+- **Room Class**: Represents a room in the design system.
+  - `id`: Unique identifier for the room.
+  - `name`: Name of the room.
+  - `size`: Size of the room in square meters.
+  - `design_id`: ID of the associated design theme.
+
+- **Furniture Class**: Represents furniture in a room.
+  - `id`: Unique identifier for the furniture.
+  - `name`: Name of the furniture.
+  - `material`: Material of the furniture.
+  - `price`: Price of the furniture.
+  - `room_id`: ID of the associated room.
+
+- **Design Class**: Represents a design theme.
+  - `id`: Unique identifier for the design theme.
+  - `theme`: Name of the design theme.
