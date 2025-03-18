@@ -1,10 +1,6 @@
-# interior_design.py
-
 import argparse
 from sqlalchemy import create_engine, Column, Integer, String, ForeignKey, Float
 from sqlalchemy.orm import relationship, sessionmaker, declarative_base
-
-from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 
@@ -15,14 +11,6 @@ engine = create_engine(DATABASE_URL, echo=True)
 Session = sessionmaker(bind=engine)
 
 class Room(Base):
-    """
-    Room Class (representing a room in the design system)
-    Attributes:
-        id (int): The unique identifier for the room.
-        name (str): The name of the room.
-        size (float): The size of the room in square meters.
-        design_id (int): The ID of the associated design theme.
-    """
     __tablename__ = 'rooms'
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
@@ -32,20 +20,7 @@ class Room(Base):
     furniture_items = relationship("Furniture", back_populates="room")
     design = relationship("Design", back_populates="rooms")
 
-    def __repr__(self) -> str:
-        """Return a string representation of the Room instance."""
-        return f"<Room(name={self.name}, size={self.size})>"
-
 class Furniture(Base):
-    """
-    Furniture Class (representing furniture in a room)
-    Attributes:
-        id (int): The unique identifier for the furniture.
-        name (str): The name of the furniture.
-        material (str): The material of the furniture.
-        price (float): The price of the furniture.
-        room_id (int): The ID of the associated room.
-    """
     __tablename__ = 'furnitures'
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
@@ -55,26 +30,139 @@ class Furniture(Base):
     
     room = relationship("Room", back_populates="furniture_items")
 
-    def __repr__(self) -> str:
-        """Return a string representation of the Furniture instance."""
-        return f"<Furniture(name={self.name}, material={self.material}, price={self.price})>"
-
 class Design(Base):
-    """
-    Design Class (representing a design theme)
-    Attributes:
-        id (int): The unique identifier for the design theme.
-        theme (str): The name of the design theme.
-    """
     __tablename__ = 'designs'
     id = Column(Integer, primary_key=True)
     theme = Column(String, nullable=False)
     
     rooms = relationship("Room", back_populates="design")
 
-    def __repr__(self) -> str:
-        """Return a string representation of the Design instance."""
-        return f"<Design(theme={self.theme})>"
+# CRUD for Room
+def create_room(name, size, design_id):
+    session = Session()
+    new_room = Room(name=name, size=size, design_id=design_id)
+    session.add(new_room)
+    session.commit()
+    session.close()
+    print(f"Room '{name}' created successfully!")
+
+def read_rooms():
+    session = Session()
+    rooms = session.query(Room).all()
+    for room in rooms:
+        print(room)
+    session.close()
+
+def update_room(room_id, name=None, size=None, design_id=None):
+    session = Session()
+    room = session.query(Room).filter(Room.id == room_id).first()
+    if room:
+        if name:
+            room.name = name
+        if size:
+            room.size = size
+        if design_id:
+            room.design_id = design_id
+        session.commit()
+        print(f"Room '{room_id}' updated successfully!")
+    else:
+        print(f"Room '{room_id}' not found.")
+    session.close()
+
+def delete_room(room_id):
+    session = Session()
+    room = session.query(Room).filter(Room.id == room_id).first()
+    if room:
+        session.delete(room)
+        session.commit()
+        print(f"Room '{room_id}' deleted successfully!")
+    else:
+        print(f"Room '{room_id}' not found.")
+    session.close()
+
+# CRUD Operations for Furniture
+def create_furniture(name, material, price, room_id):
+    session = Session()
+    new_furniture = Furniture(name=name, material=material, price=price, room_id=room_id)
+    session.add(new_furniture)
+    session.commit()
+    session.close()
+    print(f"Furniture '{name}' created successfully!")
+
+def read_furniture():
+    session = Session()
+    furniture_list = session.query(Furniture).all()
+    for furniture in furniture_list:
+        print(furniture)
+    session.close()
+
+def update_furniture(furniture_id, name=None, material=None, price=None, room_id=None):
+    session = Session()
+    furniture = session.query(Furniture).filter(Furniture.id == furniture_id).first()
+    if furniture:
+        if name:
+            furniture.name = name
+        if material:
+            furniture.material = material
+        if price:
+            furniture.price = price
+        if room_id:
+            furniture.room_id = room_id
+        session.commit()
+        print(f"Furniture '{furniture_id}' updated successfully!")
+    else:
+        print(f"Furniture '{furniture_id}' not found.")
+    session.close()
+
+def delete_furniture(furniture_id):
+    session = Session()
+    furniture = session.query(Furniture).filter(Furniture.id == furniture_id).first()
+    if furniture:
+        session.delete(furniture)
+        session.commit()
+        print(f"Furniture '{furniture_id}' deleted successfully!")
+    else:
+        print(f"Furniture '{furniture_id}' not found.")
+    session.close()
+
+# CRUD Operations for Design
+def create_design(theme):
+    session = Session()
+    new_design = Design(theme=theme)
+    session.add(new_design)
+    session.commit()
+    session.close()
+    print(f"Design theme '{theme}' created successfully!")
+
+def read_designs():
+    session = Session()
+    designs = session.query(Design).all()
+    for design in designs:
+        print(design)
+    session.close()
+
+def update_design(design_id, theme=None):
+    session = Session()
+    design = session.query(Design).filter(Design.id == design_id).first()
+    if design:
+        if theme:
+            design.theme = theme
+        session.commit()
+        print(f"Design '{design_id}' updated successfully!")
+    else:
+        print(f"Design '{design_id}' not found.")
+    session.close()
+
+def delete_design(design_id):
+    session = Session()
+    design = session.query(Design).filter(Design.id == design_id).first()
+    if design:
+        session.delete(design)
+        session.commit()
+        print(f"Design '{design_id}' deleted successfully!")
+    else:
+        print(f"Design '{design_id}' not found.")
+    session.close()
 
 # Create all tables in the database
 try:

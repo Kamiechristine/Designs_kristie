@@ -1,6 +1,114 @@
 # cli.py
 
+from interior_design import create_room, read_rooms, update_room, delete_room
+from interior_design import create_furniture, read_furniture, update_furniture, delete_furniture
+from interior_design import create_design, read_designs, update_design, delete_design
+from interior_design import create_furniture, read_furniture, update_furniture, delete_furniture
+from interior_design import create_design, read_designs, update_design, delete_design
+
+# cli.py
+
 import argparse
+
+def main():
+    parser = argparse.ArgumentParser(description="Interior Design CLI")
+    subparsers = parser.add_subparsers(dest="command")
+
+    # Room commands
+    room_parser = subparsers.add_parser("room")
+    room_subparsers = room_parser.add_subparsers(dest="action")
+    
+    room_create_parser = room_subparsers.add_parser("create")
+    room_create_parser.add_argument("name", type=str, help="Name of the room")
+    room_create_parser.add_argument("size", type=float, help="Size of the room in square meters")
+    room_create_parser.add_argument("design_id", type=int, help="Design ID associated with the room")
+
+    room_read_parser = room_subparsers.add_parser("read", help="Read all rooms")
+
+    room_update_parser = room_subparsers.add_parser("update")
+    room_update_parser.add_argument("room_id", type=int, help="ID of the room to update")
+    room_update_parser.add_argument("--name", type=str, help="New name of the room")
+    room_update_parser.add_argument("--size", type=float, help="New size of the room in square meters")
+    room_update_parser.add_argument("--design_id", type=int, help="New design ID associated with the room")
+
+    room_delete_parser = room_subparsers.add_parser("delete")
+    room_delete_parser.add_argument("room_id", type=int, help="ID of the room to delete")
+
+    # Furniture commands
+    furniture_parser = subparsers.add_parser("furniture")
+    furniture_subparsers = furniture_parser.add_subparsers(dest="action")
+    
+    furniture_create_parser = furniture_subparsers.add_parser("create")
+    furniture_create_parser.add_argument("name", type=str, help="Name of the furniture")
+    furniture_create_parser.add_argument("material", type=str, help="Material of the furniture")
+    furniture_create_parser.add_argument("price", type=float, help="Price of the furniture")
+    furniture_create_parser.add_argument("room_id", type=int, help="Room ID associated with the furniture")
+
+    furniture_read_parser = furniture_subparsers.add_parser("read", help="Read all furniture")
+
+    furniture_update_parser = furniture_subparsers.add_parser("update")
+    furniture_update_parser.add_argument("furniture_id", type=int, help="ID of the furniture to update")
+    furniture_update_parser.add_argument("--name", type=str, help="New name of the furniture")
+    furniture_update_parser.add_argument("--material", type=str, help="New material of the furniture")
+    furniture_update_parser.add_argument("--price", type=float, help="New price of the furniture")
+    furniture_update_parser.add_argument("--room_id", type=int, help="New room ID associated with the furniture")
+
+    furniture_delete_parser = furniture_subparsers.add_parser("delete")
+    furniture_delete_parser.add_argument("furniture_id", type=int, help="ID of the furniture to delete")
+
+    # Design commands
+    design_parser = subparsers.add_parser("design")
+    design_subparsers = design_parser.add_subparsers(dest="action")
+    
+    design_create_parser = design_subparsers.add_parser("create")
+    design_create_parser.add_argument("theme", type=str, help="Theme of the design")
+
+    design_read_parser = design_subparsers.add_parser("read", help="Read all designs")
+
+    design_update_parser = design_subparsers.add_parser("update")
+    design_update_parser.add_argument("design_id", type=int, help="ID of the design to update")
+    design_update_parser.add_argument("--theme", type=str, help="New theme of the design")
+
+    design_delete_parser = design_subparsers.add_parser("delete")
+    design_delete_parser.add_argument("design_id", type=int, help="ID of the design to delete")
+
+    args = parser.parse_args()
+
+    # Handle Room commands
+    if args.command == "room":
+        if args.action == "create":
+            create_room(args.name, args.size, args.design_id)
+        elif args.action == "read":
+            read_rooms()
+        elif args.action == "update":
+            update_room(args.room_id, args.name, args.size, args.design_id)
+        elif args.action == "delete":
+            delete_room(args.room_id)
+
+    # Handle Furniture commands
+    elif args.command == "furniture":
+        if args.action == "create":
+            create_furniture(args.name, args.material, args.price, args.room_id)
+        elif args.action == "read":
+            read_furniture()
+        elif args.action == "update":
+            update_furniture(args.furniture_id, args.name, args.material, args.price, args.room_id)
+        elif args.action == "delete":
+            delete_furniture(args.furniture_id)
+
+    # Handle Design commands
+    elif args.command == "design":
+        if args.action == "create":
+            create_design(args.theme)
+        elif args.action == "read":
+            read_designs()
+        elif args.action == "update":
+            update_design(args.design_id, args.theme)
+        elif args.action == "delete":
+            delete_design(args.design_id)
+
+if __name__ == "__main__":
+    main()
 from interior_design import Room, Furniture, Design, Session
 
 def add_design(theme):
